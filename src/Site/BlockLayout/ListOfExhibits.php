@@ -51,6 +51,7 @@ class ListOfExhibits extends AbstractBlockLayout
         'child_pages' => 1,
         'limit' => null,
         'pagination' => false,
+        'heading' => "List of Exhibits"
     ];
 
 
@@ -262,6 +263,8 @@ class ListOfExhibits extends AbstractBlockLayout
             ],
 
         ])->setValue('1');
+
+
         $form->add([
             'name'=> 'o:block[__blockIndex__][o:data][include_self]',
             'type' => Element\Checkbox::class,
@@ -300,6 +303,18 @@ class ListOfExhibits extends AbstractBlockLayout
 //
 //        ]);
 
+        $form->add([
+            'name' => 'o:block[__blockIndex__][o:data][heading]',
+            'type'=> \Zend\Form\Element\Text::class,
+            'attributes' => array(
+                'id' => 'exhibit-contents-heading',
+                'value' => 'Exhibit Contents'
+            ),
+            'options' => [
+                'label' => 'Heading'
+            ]
+        ]);
+
 
 
         $form->setData([
@@ -307,6 +322,8 @@ class ListOfExhibits extends AbstractBlockLayout
             'o:block[__blockIndex__][o:data][sibling_sites]' => $data['sibling_sites'],
             'o:block[__blockIndex__][o:data][child_pages]' => $data['child_pages'],
             'o:block[__blockIndex__][o:data][include_self]' => $data['include_self'],
+            'o:block[__blockIndex__][o:data][heading]' => $data['heading'],
+
 
 //            'o:block[__blockIndex__][o:data][limit]' => $data['limit'],
 //            'o:block[__blockIndex__][o:data][pagination]' => $data['pagination'],
@@ -333,12 +350,14 @@ class ListOfExhibits extends AbstractBlockLayout
 
         $current_page = $block->page()->id();
 
+        $heading = $block->dataValue('heading');
 
         return $view->partial('common/block-layout/list-of-exhibits', [
             'exhibits' => $exhibits,
             'siblings' => $siblings,
             'include_self' => $block->dataValue('include_self'),
-            'current_page' => $current_page
+            'current_page' => $current_page,
+            'heading' => $heading,
         ]);
     }
 }
