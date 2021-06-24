@@ -138,6 +138,12 @@ class ExhibitContents extends AbstractBlockLayout
             if ($depth <= $upper_depth){
                 $edge = false;
             }
+            //if the page was deleted it can still remain in nav. Catch that and skip if so.
+            try {
+                $view->api()->read('site_pages', ['id' => $page_id]);
+            } catch (\Exception $exception){
+                continue;
+            }
             if ($edge === true && $depth<=$upper_depth+$exhibits_depth){
                 $exhibits[$page_id] = $this->getPreview($page_id, $default_img,'large', $view);
 
