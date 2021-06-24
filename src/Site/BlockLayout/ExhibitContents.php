@@ -187,7 +187,7 @@ class ExhibitContents extends AbstractBlockLayout
 
         $form->add([
             'name' => 'o:block[__blockIndex__][o:data][heading]',
-            'type'=> \Laminas\Form\Element\Text::class,
+            'type'=> \Zend\Form\Element\Text::class,
             'attributes' => array(
                 'id' => 'exhibit-contents-heading',
                 'value' => 'Exhibit Contents'
