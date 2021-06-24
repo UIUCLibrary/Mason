@@ -48,7 +48,7 @@ class ListOfExhibits extends AbstractBlockLayout
     protected $defaults = [
         'all_exhibits' => false,
         'sibling_sites' => false,
-        'child_pages' => null,
+        'child_pages' => 1,
         'limit' => null,
         'pagination' => false,
     ];
