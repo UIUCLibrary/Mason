@@ -34,7 +34,8 @@ class ExhibitContents extends AbstractBlockLayout
 
 
     protected $defaults = [
-        'child_pages' => null,
+        'child_pages' => 1,
+        'heading' => 'Exhibit Contents'
     ];
 
 
@@ -184,10 +185,22 @@ class ExhibitContents extends AbstractBlockLayout
 
         ]);
 
+        $form->add([
+            'name' => 'o:block[__blockIndex__][o:data][heading]',
+            'type'=> \Laminas\Form\Element\Text::class,
+            'attributes' => array(
+                'id' => 'exhibit-contents-heading',
+                'value' => 'Exhibit Contents'
+            ),
+            'options' => [
+                'label' => 'Heading'
+            ]
+        ]);
+
         $form->setData([
 
             'o:block[__blockIndex__][o:data][child_pages]' => $data['child_pages'],
-
+            'o:block[__blockIndex__][o:data][heading]' => $data['heading'],
         ]);
 
         return $view->formCollection($form, false);
@@ -199,13 +212,13 @@ class ExhibitContents extends AbstractBlockLayout
         $exhibits = [];
 
 
-            $exhibits = array_merge($exhibits, $this->getChildPages($block, $view));
+        $exhibits = array_merge($exhibits, $this->getChildPages($block, $view));
 
-
-
+        $heading = $block->dataValue('heading');
 
         return $view->partial('common/block-layout/exhibit-contents', [
             'exhibits' => $exhibits,
+            'heading' => $heading,
         ]);
     }
 }
