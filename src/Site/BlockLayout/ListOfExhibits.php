@@ -12,11 +12,11 @@ use Omeka\Site\BlockLayout\AbstractBlockLayout;
 use Omeka\Site\Navigation\Translator;
 use Omeka\View\Helper\Api;
 use Teams\Form\Element\AllTeamSelect;
-use Zend\Db\Sql\Select;
-use Zend\Form\Element;
-use Zend\Form\Form;
+use Laminas\Db\Sql\Select;
+use Laminas\Form\Element;
+use Laminas\Form\Form;
 use Omeka\Module\Manager;
-use Zend\View\Renderer\PhpRenderer;
+use Laminas\View\Renderer\PhpRenderer;
 use function Sodium\add;
 
 class ListOfExhibits extends AbstractBlockLayout
@@ -305,7 +305,7 @@ class ListOfExhibits extends AbstractBlockLayout
 
         $form->add([
             'name' => 'o:block[__blockIndex__][o:data][heading]',
-            'type'=> \Zend\Form\Element\Text::class,
+            'type'=> \Laminas\Form\Element\Text::class,
             'attributes' => array(
                 'id' => 'exhibit-contents-heading',
                 'value' => 'Exhibit Contents'
