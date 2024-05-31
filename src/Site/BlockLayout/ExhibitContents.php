@@ -9,10 +9,10 @@ use Omeka\Api\Representation\SiteRepresentation;
 use Omeka\Api\Representation\SitePageRepresentation;
 use Omeka\Api\Representation\SitePageBlockRepresentation;
 use Omeka\Site\BlockLayout\AbstractBlockLayout;
-use Zend\Form\Element;
-use Zend\Form\Form;
+use Laminas\Form\Element;
+use Laminas\Form\Form;
 use Omeka\Module\Manager;
-use Zend\View\Renderer\PhpRenderer;
+use Laminas\View\Renderer\PhpRenderer;
 
 class ExhibitContents extends AbstractBlockLayout
 {
@@ -187,7 +187,7 @@ class ExhibitContents extends AbstractBlockLayout
 
         $form->add([
             'name' => 'o:block[__blockIndex__][o:data][heading]',
-            'type'=> \Zend\Form\Element\Text::class,
+            'type'=> \Laminas\Form\Element\Text::class,
             'attributes' => array(
                 'id' => 'exhibit-contents-heading',
                 'value' => 'Exhibit Contents'

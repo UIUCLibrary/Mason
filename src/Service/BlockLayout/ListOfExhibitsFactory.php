@@ -6,7 +6,7 @@ namespace Mason\Service\BlockLayout;
 
 use Interop\Container\ContainerInterface;
 use Mason\Site\BlockLayout\ListOfExhibits;
-use Zend\ServiceManager\Factory\FactoryInterface;
+use Laminas\ServiceManager\Factory\FactoryInterface;
 
 class ListOfExhibitsFactory implements FactoryInterface
 {
