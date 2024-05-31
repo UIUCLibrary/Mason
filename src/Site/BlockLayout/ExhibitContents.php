@@ -3,7 +3,6 @@
 
 namespace Mason\Site\BlockLayout;
 
-
 use Doctrine\ORM\EntityManager;
 use Omeka\Api\Representation\SiteRepresentation;
 use Omeka\Api\Representation\SitePageRepresentation;
@@ -38,15 +37,13 @@ class ExhibitContents extends AbstractBlockLayout
         'heading' => 'Exhibit Contents'
     ];
 
-
-
-
     public function getLabel()
     {
         return 'Exhibit Contents (KSharp)'; // @translate
     }
 
-    function getPreview($page_id, $default, $size, PhpRenderer $view){
+    public function getPreview($page_id, $default, $size, PhpRenderer $view)
+    {
         //default thumbnail if the page has no media
         $img = $default;
         $alt = 'Exhibit landing page';
@@ -54,36 +51,35 @@ class ExhibitContents extends AbstractBlockLayout
         $page = $view->api()->read('site_pages', ['id' => $page_id])->getContent();
 
         //get the first media attachment on the target page
-        foreach($page->blocks() as $block){
-            if (get_class($block) === 'Omeka\Api\Representation\SitePageBlockRepresentation'){
-                if ($block->attachments()){
+        foreach ($page->blocks() as $block) {
+            if (get_class($block) === 'Omeka\Api\Representation\SitePageBlockRepresentation') {
+                if ($block->attachments()) {
                     $media = false;
                     foreach ($block->attachments() as $attachment):
-                        if($attachment->media()){
+                        if ($attachment->media()) {
                             $media = $attachment->media();
-                        } elseif ($attachment->item()->primaryMedia()){
+                        } elseif ($attachment->item()->primaryMedia()) {
                             $media = $attachment->item()->primaryMedia();
                         }
-                        if ($media){
-                            if ($thumbnail = $media->thumbnail()) {
-                                $img = $thumbnail->assetUrl();
-                            } else {
-                                $img = $media->thumbnailUrl($size);
-                            }
-                            if (array_key_exists('o-module-alt-text:alt-text', $media->primaryMedia()->jsonSerialize())
+                    if ($media) {
+                        if ($thumbnail = $media->thumbnail()) {
+                            $img = $thumbnail->assetUrl();
+                        } else {
+                            $img = $media->thumbnailUrl($size);
+                        }
+                        if (array_key_exists('o-module-alt-text:alt-text', $media->primaryMedia()->jsonSerialize())
                                 && $media->primaryMedia()->jsonSerialize()['o-module-alt-text:alt-text']
                             ) {
-                                $alt = $media->primaryMedia()->jsonSerialize()['o-module-alt-text:alt-text'];
-                            } else {
-                                $alt = 'Thumbnail preview for next page';
-                            }
-                            break 2;
+                            $alt = $media->primaryMedia()->jsonSerialize()['o-module-alt-text:alt-text'];
+                        } else {
+                            $alt = 'Thumbnail preview for next page';
                         }
+                        break 2;
+                    }
                     endforeach;
                 }
             }
         }
-
 
         $title = $page->title();
         $preview['img_src'] = $img;
@@ -136,35 +132,35 @@ class ExhibitContents extends AbstractBlockLayout
         $edge = false;
         $upper_depth = 0;
         foreach ($indents as $page_id => $depth):
-            if ($depth <= $upper_depth){
+            if ($depth <= $upper_depth) {
                 $edge = false;
             }
-            //if the page was deleted it can still remain in nav. Catch that and skip if so.
-            try {
-                $view->api()->read('site_pages', ['id' => $page_id]);
-            } catch (\Exception $exception){
-                continue;
-            }
-            if ($edge === true && $depth<=$upper_depth+$exhibits_depth){
-                $exhibits[$page_id] = $this->getPreview($page_id, $default_img,'large', $view);
-
-            }
-            if ($page_id === $current_page_id){
-                $edge = true;
-                $upper_depth = $depth;
-            }
+        //if the page was deleted it can still remain in nav. Catch that and skip if so.
+        try {
+            $view->api()->read('site_pages', ['id' => $page_id]);
+        } catch (\Exception $exception) {
+            continue;
+        }
+        if ($edge === true && $depth<=$upper_depth+$exhibits_depth) {
+            $exhibits[$page_id] = $this->getPreview($page_id, $default_img, 'large', $view);
+        }
+        if ($page_id === $current_page_id) {
+            $edge = true;
+            $upper_depth = $depth;
+        }
 
 
         endforeach;
 
         return $exhibits;
-
     }
 
-    public function form(PhpRenderer $view, SiteRepresentation $site,
-                         SitePageRepresentation $page = null, SitePageBlockRepresentation $block = null
+    public function form(
+        PhpRenderer $view,
+        SiteRepresentation $site,
+        SitePageRepresentation $page = null,
+        SitePageBlockRepresentation $block = null
     ) {
-
         $data = $block ? $block->data() + $this->defaults : $this->defaults;
 
         $form = new Form();
@@ -208,7 +204,6 @@ class ExhibitContents extends AbstractBlockLayout
 
     public function render(PhpRenderer $view, SitePageBlockRepresentation $block)
     {
-
         $exhibits = [];
 
 
