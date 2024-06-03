@@ -1,6 +1,7 @@
 <?php
 namespace Mason;
 
+use Mason\Service\BlockLayout\DisableSubNavFactory;
 use Mason\Service\BlockLayout\ListOfExhibitsFactory;
 use Mason\Service\BlockLayout\ExhibitContentsFactory;
 
@@ -12,6 +13,7 @@ return [
         'factories'  => [
             'listOfExhibits' => ListOfExhibitsFactory::class,
             'exhibitContents' => ExhibitContentsFactory::class,
+            'disableSubNav' => DisableSubNavFactory::class
 
         ]
     ],
