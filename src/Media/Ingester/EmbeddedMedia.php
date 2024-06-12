@@ -28,7 +28,6 @@ Class EmbeddedMedia implements MutableIngesterInterface
     {
         $data = $request->getContent();
         if(!isset($data['o:source'])){
-            print_r($data);
             $errorStore->addError('error', 'No media URL provided');
             return;
         }
@@ -56,7 +55,14 @@ Class EmbeddedMedia implements MutableIngesterInterface
         ]);
         //the UIUC DL files don't have extensions typically
         $mediaType = new Select('o:media[__index__][o:media_type]');
-        return $view->formRow($urlInput);
+        $mediaType->setValueOptions(['audio'=>'audio','image'=>'image']);
+        $mediaType->setOptions([
+            'id' => 'media-url-embedded-url-media-type__index__',
+            'required' => true,
+            'label' => 'Media Type',
+        ]);
+        return $view->formRow($urlInput)
+            .$view->formRow($mediaType);
     }
 
     public function update(Media $media, Request $request, ErrorStore $errorStore)
