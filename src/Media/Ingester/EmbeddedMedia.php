@@ -58,7 +58,7 @@ Class EmbeddedMedia implements MutableIngesterInterface
         }
         $manifest_matches = [];
         preg_match('/(https:\/\/digital.library.illinois.edu\/binaries\/.*)\/object\?disposition=inline/', $data['o:source'],$manifest_matches);
-        if (!count($manifest_matches) > 1){
+        if (!count($manifest_matches) < 1){
             $errorStore->addError('o:source', 'Invalid media URL. Expected pattern looks like https://digital.library.illinois.edu/binaries/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx-x/object?disposition=inline');
             return;
         }
