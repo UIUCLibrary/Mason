@@ -17,12 +17,13 @@ class EmbeddedMedia implements RendererInterface
     {
         $audio_types = ['mp3','audio','audio/mp3','audio/mpeg'];
 
+
         $data = $media->mediaData();
         $mediaType = $media->mediaType();
         if (in_array($media->mediaType(), $audio_types)){
             $renderer = new EmbeddedAudioRenderer();
-        } elseif ($mediaType == "image") {
-            $renderer = new EmbeddedThumbnailRenderer();
+        } elseif ($mediaType == "application/pdf") {
+            $renderer = new EmbeddedPDFRenderer();
         } else {
             $renderer = new Fallback();
         }
