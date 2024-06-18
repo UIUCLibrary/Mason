@@ -15,10 +15,11 @@ class EmbeddedMedia implements RendererInterface
 
     public function render(PhpRenderer $view, MediaRepresentation $media, array $options = [])
     {
+        $audio_types = ['mp3','audio','audio/mp3','audio/mpeg'];
+
         $data = $media->mediaData();
-        $mediaType = 'audio';
-//        $mediaType = $data['o:media_type'];
-        if ($mediaType == "audio"){
+        $mediaType = $data['o:media_type'];
+        if (in_array($mediaType, $audio_types)){
             $renderer = new EmbeddedAudioRenderer();
         } elseif ($mediaType == "image") {
             $renderer = new EmbeddedThumbnailRenderer();

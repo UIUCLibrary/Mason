@@ -91,17 +91,10 @@ Class EmbeddedMedia implements MutableIngesterInterface
         if (!($manifest && array_key_exists('media_type', $manifest))) {
             $errorStore->addError('o:source', sprintf("Couldn't find a media_type in the manifest for the resource at %s", $manifest_uri_string));
             return false;
+
         }
-        $data['media_type'] = $manifest['media_type'];
+        $media->setMediaType($manifest['media_type']);
 
-
-//        if ($data['media_type'] == 'image'){
-////            $request->setContent(['ingest_url' => $data['o:source']]);
-////            $ingester = new \Omeka\Media\Ingester\Url($this->downloader);
-////            $ingester->ingest($media,$request, $errorStore);
-//            $media->setThumbnail();
-//        }
-        //set the media data
 
         $data['url'] = $url;
         $media->setData($data);

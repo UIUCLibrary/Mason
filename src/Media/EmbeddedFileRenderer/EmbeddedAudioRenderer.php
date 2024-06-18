@@ -14,6 +14,7 @@ class EmbeddedAudioRenderer extends AudioRenderer
      */
     public function render(PhpRenderer $view, MediaRepresentation $media, array $options = []): string
     {
+
         $options = array_merge(self::DEFAULT_OPTIONS, $options);
         $data = $media->mediaData();
         $url= $data['o:source'];
