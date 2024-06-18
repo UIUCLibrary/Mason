@@ -5,6 +5,7 @@ namespace Mason\Media\Renderer;
 use Laminas\View\Renderer\PhpRenderer;
 use Laminas\View\Resolver\ResolverInterface;
 use Mason\Media\EmbeddedFileRenderer\EmbeddedAudioRenderer;
+use Mason\Media\EmbeddedFileRenderer\EmbeddedPdfRenderer;
 use Mason\Media\EmbeddedFileRenderer\EmbeddedThumbnailRenderer;
 use Omeka\Api\Representation\MediaRepresentation;
 use Omeka\Media\Renderer\Fallback;
@@ -23,7 +24,7 @@ class EmbeddedMedia implements RendererInterface
         if (in_array($media->mediaType(), $audio_types)){
             $renderer = new EmbeddedAudioRenderer();
         } elseif ($mediaType == "application/pdf") {
-            $renderer = new EmbeddedPDFRenderer();
+            $renderer = new EmbeddedPdfRenderer();
         } else {
             $renderer = new Fallback();
         }
