@@ -96,7 +96,11 @@ Class EmbeddedMedia implements MutableIngesterInterface
         $media->setMediaType($manifest['media_type']);
 
 
-        $data['url'] = $url;
+        if ($manifest['media_type'] == 'application/pdf') {
+            $data['embedding_url'] = $manifest_uri . '/stream?content-disposition=inline';
+        } else {
+            $data['embedding_url'] = $manifest_uri . '/object?disposition=inline';
+        }
         $media->setData($data);
 
     }

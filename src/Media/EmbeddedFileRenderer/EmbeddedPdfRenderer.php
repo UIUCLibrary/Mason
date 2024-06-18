@@ -17,6 +17,6 @@ class EmbeddedPdfRenderer implements RendererInterface
         $src = $media->mediaData()['o:source'];
         return sprintf(
             '<iframe src="%s" style="width: 100%%; height: 600px;" allowfullscreen></iframe>',
-            $view->escapeHtml($src));
+            $view->escapeHtml($media->mediaData()['embedding_url']));
     }
 }

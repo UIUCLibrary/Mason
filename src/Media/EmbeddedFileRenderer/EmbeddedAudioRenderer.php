@@ -17,7 +17,7 @@ class EmbeddedAudioRenderer extends AudioRenderer
 
         $options = array_merge(self::DEFAULT_OPTIONS, $options);
         $data = $media->mediaData();
-        $url= $data['o:source'];
+        $url= $data['embedding_url'];
 
         $attrs[] = sprintf('src="%s"', $view->escapeHtml($url));
 
