@@ -14,9 +14,11 @@ class EmbeddedPdfRenderer implements RendererInterface
      */
     public function render(PhpRenderer $view, MediaRepresentation $media, array $options = [])
     {
-        $src = $media->mediaData()['o:source'];
+        $data = $media->mediaData();
+        $base_url = $data['manifest_uri'];
+        $streaming_url = $base_url .'/stream?content-disposition=inline';
         return sprintf(
             '<iframe src="%s" style="width: 100%%; height: 600px;" allowfullscreen></iframe>',
-            $view->escapeHtml($media->mediaData()['embedding_url']));
+            $view->escapeHtml($streaming_url));
     }
 }
