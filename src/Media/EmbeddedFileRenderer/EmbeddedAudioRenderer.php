@@ -15,6 +15,7 @@ class EmbeddedAudioRenderer extends AudioRenderer
     public function render(PhpRenderer $view, MediaRepresentation $media, array $options = []): string
     {
 
+        $options = array_merge(self::DEFAULT_OPTIONS, $options);
         $data = $media->mediaData();
         $base_url = $data['manifest_uri'];
         $streaming_url = $base_url .'/object?disposition=inline';
@@ -37,7 +38,7 @@ class EmbeddedAudioRenderer extends AudioRenderer
         return sprintf(
             '<audio %s>%s</audio>',
             implode(' ', $attrs),
-            $view->hyperlink('', $url)
+            $view->hyperlink('', $streaming_url)
         );
     }
 }
