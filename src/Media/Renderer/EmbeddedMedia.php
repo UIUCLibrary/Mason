@@ -4,7 +4,10 @@ namespace Mason\Media\Renderer;
 
 use Laminas\View\Renderer\PhpRenderer;
 use Laminas\View\Resolver\ResolverInterface;
+use Mason\Media\EmbeddedFileRenderer\EmbeddedAudioRenderer;
+use Mason\Media\EmbeddedFileRenderer\EmbeddedThumbnailRenderer;
 use Omeka\Api\Representation\MediaRepresentation;
+use Omeka\Media\Renderer\Fallback;
 use Omeka\Media\Renderer\RendererInterface;
 
 class EmbeddedMedia implements RendererInterface
@@ -13,16 +16,17 @@ class EmbeddedMedia implements RendererInterface
     public function render(PhpRenderer $view, MediaRepresentation $media, array $options = [])
     {
         $data = $media->mediaData();
-        $url= $data['o:source'];
-        $html = <<<'HTML'
-        <audio src="%1$s?disposition=inline" type="audio/mpeg" controls="">
-        </audio>
-        HTML;
+        $mediaType = 'audio';
+//        $mediaType = $data['o:media_type'];
+        if ($mediaType == "audio"){
+            $renderer = new EmbeddedAudioRenderer();
+        } elseif ($mediaType == "image") {
+            $renderer = new EmbeddedThumbnailRenderer();
+        } else {
+            $renderer = new Fallback();
+        }
+        return $renderer->render( $view,  $media, ['link'=>'original', 'thumbnailType' => 'original']);
 
-        return sprintf(
-            $html,
-            $url
-        );
     }
 }
 

@@ -8,11 +8,22 @@ use Laminas\Uri\Http as HttpUri;
 use Omeka\Api\Representation\MediaRepresentation;
 use Omeka\Api\Request;
 use Omeka\Entity\Media;
+use Omeka\File\Downloader;
 use Omeka\Media\Ingester\MutableIngesterInterface;
+use Omeka\Media\Ingester\Url;
 use Omeka\Stdlib\ErrorStore;
 use Laminas\View\Renderer\PhpRenderer;
 Class EmbeddedMedia implements MutableIngesterInterface
 {
+    /**
+     * @var Downloader
+     */
+    protected $downloader;
+
+    public function __construct(Downloader $downloader)
+    {
+        $this->downloader = $downloader;
+    }
 
     public function getLabel()
     {
@@ -26,6 +37,7 @@ Class EmbeddedMedia implements MutableIngesterInterface
 
     public function ingest(Media $media, Request $request, ErrorStore $errorStore)
     {
+
         $data = $request->getContent();
         if(!isset($data['o:source'])){
             $errorStore->addError('error', 'No media URL provided');
@@ -36,6 +48,20 @@ Class EmbeddedMedia implements MutableIngesterInterface
             $errorStore->addError('o:source', 'Invalid media URL');
             return;
         }
+        $media_manifest = new HttpUri();
+        $media_manifest->parse($data['o:source']);
+        print_r($media_manifest);
+
+        $tempFile = $this->downloader->download($url, $errorStore);
+        if (!$tempFile) {
+            return;
+        }
+//        if ($data['o:media_type'] == 'image'){
+////            $request->setContent(['ingest_url' => $data['o:source']]);
+////            $ingester = new \Omeka\Media\Ingester\Url($this->downloader);
+////            $ingester->ingest($media,$request, $errorStore);
+//            $media->setThumbnail();
+//        }
         $data['url'] = $url;
         $media->setData($data);
 
@@ -53,16 +79,7 @@ Class EmbeddedMedia implements MutableIngesterInterface
             'id' => 'media-url-embedded-url-source__index__',
             'required' => true,
         ]);
-        //the UIUC DL files don't have extensions typically
-        $mediaType = new Select('o:media[__index__][o:media_type]');
-        $mediaType->setValueOptions(['audio'=>'audio','image'=>'image']);
-        $mediaType->setOptions([
-            'id' => 'media-url-embedded-url-media-type__index__',
-            'required' => true,
-            'label' => 'Media Type',
-        ]);
-        return $view->formRow($urlInput)
-            .$view->formRow($mediaType);
+        return $view->formRow($urlInput);
     }
 
     public function update(Media $media, Request $request, ErrorStore $errorStore)
