@@ -18,8 +18,8 @@ class EmbeddedMedia implements RendererInterface
         $audio_types = ['mp3','audio','audio/mp3','audio/mpeg'];
 
         $data = $media->mediaData();
-        $mediaType = $data['o:media_type'];
-        if (in_array($mediaType, $audio_types)){
+        $mediaType = $media->mediaType();
+        if (in_array($media->mediaType(), $audio_types)){
             $renderer = new EmbeddedAudioRenderer();
         } elseif ($mediaType == "image") {
             $renderer = new EmbeddedThumbnailRenderer();
