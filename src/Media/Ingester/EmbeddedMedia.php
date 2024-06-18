@@ -4,6 +4,7 @@ namespace Mason\Media\Ingester;
 
 use Laminas\Form\Element\Select;
 use Laminas\Form\Element\Url as UrlElement;
+use Laminas\Http\Client as HttpClient;
 use Laminas\Uri\Http as HttpUri;
 use Omeka\Api\Representation\MediaRepresentation;
 use Omeka\Api\Request;
@@ -16,12 +17,18 @@ use Laminas\View\Renderer\PhpRenderer;
 Class EmbeddedMedia implements MutableIngesterInterface
 {
     /**
+     * @var HttpClient
+     */
+    protected $httpClient;
+
+    /**
      * @var Downloader
      */
     protected $downloader;
 
-    public function __construct(Downloader $downloader)
+    public function __construct(HttpClient $httpClient, Downloader $downloader)
     {
+        $this->httpClient = $httpClient;
         $this->downloader = $downloader;
     }
 
@@ -38,6 +45,7 @@ Class EmbeddedMedia implements MutableIngesterInterface
     public function ingest(Media $media, Request $request, ErrorStore $errorStore)
     {
 
+        //parse the url entered and get the manifest url
         $data = $request->getContent();
         if(!isset($data['o:source'])){
             $errorStore->addError('error', 'No media URL provided');
@@ -48,20 +56,53 @@ Class EmbeddedMedia implements MutableIngesterInterface
             $errorStore->addError('o:source', 'Invalid media URL');
             return;
         }
-        $media_manifest = new HttpUri();
-        $media_manifest->parse($data['o:source']);
-        print_r($media_manifest);
-
-        $tempFile = $this->downloader->download($url, $errorStore);
-        if (!$tempFile) {
+        $manifest_matches = [];
+        preg_match('/(https:\/\/digital.library.illinois.edu\/binaries\/.*)\/object\?disposition=inline/', $data['o:source'],$manifest_matches);
+        if (!count($manifest_matches) > 1){
+            $errorStore->addError('o:source', 'Invalid media URL. Expected pattern looks like https://digital.library.illinois.edu/binaries/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx-x/object?disposition=inline');
             return;
         }
-//        if ($data['o:media_type'] == 'image'){
+        $manifest_uri_string = $manifest_matches[1];
+
+        //get the manifest
+
+        $manifest_uri = new HttpUri($manifest_uri_string);
+        if (!($manifest_uri->isValid() && $manifest_uri->isAbsolute())) {
+            $errorStore->addError('o:source', "Couldn't extract manifest uri from user input. Expected uri input looks like https://digital.library.illinois.edu/binaries/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx-x/object?disposition=inline");
+            return false;
+        }
+
+        $client = $this->httpClient;
+        $client->reset();
+        $client->setUri($manifest_uri);
+        $response = $client->send();
+        if (!$response->isOk()) {
+            $errorStore->addError('o:source', sprintf(
+                "Error reading %s: %s (%s)",
+                $this->getLabel(),
+                $response->getReasonPhrase(),
+                $response->getStatusCode()
+            ));
+            return false;
+        }
+
+        //parse the manifest and get the media type
+        $manifest = json_decode($response->getBody(), true);
+        if (!($manifest && array_key_exists('media_type', $manifest))) {
+            $errorStore->addError('o:source', sprintf("Couldn't find a media_type in the manifest for the resource at %s", $manifest_uri_string));
+            return false;
+        }
+        $data['media_type'] = $manifest['media_type'];
+
+
+//        if ($data['media_type'] == 'image'){
 ////            $request->setContent(['ingest_url' => $data['o:source']]);
 ////            $ingester = new \Omeka\Media\Ingester\Url($this->downloader);
 ////            $ingester->ingest($media,$request, $errorStore);
 //            $media->setThumbnail();
 //        }
+        //set the media data
+
         $data['url'] = $url;
         $media->setData($data);
 
