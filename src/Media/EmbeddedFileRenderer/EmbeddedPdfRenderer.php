@@ -4,8 +4,9 @@ namespace Mason\Media\EmbeddedFileRenderer;
 
 use Laminas\View\Renderer\PhpRenderer;
 use Omeka\Api\Representation\MediaRepresentation;
+use Omeka\Media\Renderer\RendererInterface;
 
-class EmbeddedPdfRenderer implements \Omeka\Media\Renderer\RendererInterface
+class EmbeddedPdfRenderer implements RendererInterface
 {
 
     /**
