@@ -2,6 +2,7 @@
 namespace Mason;
 
 use Mason\Media\Renderer\EmbeddedMedia;
+use Mason\Service\BlockLayout\ConfigurablePreviewFactory;
 use Mason\Service\BlockLayout\DisableSubNavFactory;
 use Mason\Service\BlockLayout\ListOfExhibitsFactory;
 use Mason\Service\BlockLayout\ExhibitContentsFactory;
@@ -15,7 +16,8 @@ return [
         'factories'  => [
             'listOfExhibits' => ListOfExhibitsFactory::class,
             'exhibitContents' => ExhibitContentsFactory::class,
-            'disableSubNav' => DisableSubNavFactory::class
+            'disableSubNav' => DisableSubNavFactory::class,
+            'configurablePreview' => ConfigurablePreviewFactory::class
 
         ]
     ],
