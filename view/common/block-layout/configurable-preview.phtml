@@ -1,0 +1,61 @@
+<?php
+$translate = $this->plugin('translate');
+$escape = $this->plugin('escapeHtml');
+$thumbnail = $this->plugin('thumbnail');
+$this->headLink()->appendStylesheet("https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css");
+
+?>
+
+        <?php
+        $showThumbnail = in_array('thumbnail', $this->components);
+        $showHeading = in_array('resource-heading', $this->components);
+        $showBody = in_array('resource-body', $this->components);
+        $headingTerm = $this->siteSetting('browse_heading_property_term');
+        $bodyTerm = $this->siteSetting('browse_body_property_term');
+
+        $filterLocale = (bool) $this->siteSetting('filter_locale_values');
+        $lang = $this->lang();
+        $valueLang = $filterLocale ? [$lang, ''] : null;
+
+        $row_count = -1;
+        $row_width = 1;
+        foreach ($this->resources as $resource):
+            if ($row_count == $row_width) {
+                $row_count = 0;
+            } else {
+                $row_count = $row_count + 1 ;
+            }
+            if ($row_count == 0 ){ ?>
+                <div class="preview-block card-deck">
+             <?php }
+            $heading = $headingTerm ? $resource->value($headingTerm, ['default' => $translate('[Untitled]'), 'lang' => $valueLang]) : $resource->displayTitle(null, $valueLang);
+            $body = $bodyTerm ? $resource->value($bodyTerm, ['lang' => $valueLang]) : $resource->displayDescription(null, $valueLang);
+            $linkContent = '';
+            //see https://getbootstrap.com/docs/4.3/components/card/#horizontal and https://getbootstrap.com/docs/4.3/components/card/#card-decks
+            ?>
+
+        <div class="card mb-3 <?php echo $this->resourceType; ?> resource">
+            <div class="row no-gutters">
+                <div class="col-md-4">
+                    <?php  echo $this->thumbnail($resource, 'square'); ?>
+                </div>
+
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <h5 class="card-title"><?php echo $heading ?></h5>
+                        <p class="card-text"><?php echo $body ?></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+            <?php if ($row_count == $row_width) {?>
+    </div>
+            <?php }
+
+         endforeach;
+            if ($row_count != $row_width){ ?>
+    </div>
+            <?php } ?>
+
+
+</div>
