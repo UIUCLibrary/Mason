@@ -37,7 +37,7 @@ $this->headLink()->appendStylesheet("https://cdn.jsdelivr.net/npm/bootstrap@4.3.
         <div class="card mb-3 <?php echo $this->resourceType; ?> resource">
             <div class="row no-gutters">
                 <div class="col-md-4">
-                    <?php  echo $this->thumbnail($resource, 'square'); ?>
+                    <?php  echo $resource->linkRaw($this->thumbnail($resource, 'square')); ?>
                 </div>
 
                 <div class="col-md-8">
