@@ -7,11 +7,6 @@ $this->headLink()->appendStylesheet("https://cdn.jsdelivr.net/npm/bootstrap@4.3.
 ?>
 
         <?php
-        $showThumbnail = in_array('thumbnail', $this->components);
-        $showHeading = in_array('resource-heading', $this->components);
-        $showBody = in_array('resource-body', $this->components);
-        $headingTerm = $this->siteSetting('browse_heading_property_term');
-        $bodyTerm = $this->siteSetting('browse_body_property_term');
 
         $filterLocale = (bool) $this->siteSetting('filter_locale_values');
         $lang = $this->lang();
@@ -25,11 +20,20 @@ $this->headLink()->appendStylesheet("https://cdn.jsdelivr.net/npm/bootstrap@4.3.
             } else {
                 $row_count = $row_count + 1 ;
             }
+            $title = '';
+            $subtitle = '';
             if ($row_count == 0 ){ ?>
                 <div class="preview-block card-deck">
              <?php }
-            $heading = $headingTerm ? $resource->value($headingTerm, ['default' => $translate('[Untitled]'), 'lang' => $valueLang]) : $resource->displayTitle(null, $valueLang);
-            $body = $bodyTerm ? $resource->value($bodyTerm, ['lang' => $valueLang]) : $resource->displayDescription(null, $valueLang);
+            $title = $this->titleProperty ? $resource->value($this->titleProperty, ['default' => $translate('[Untitled]'), 'lang' => $valueLang]) : $resource->displayTitle(null, $valueLang);
+            $valueResource = $resource->value($this->subtitleProperty)->valueResource();
+            if ($valueResource){
+                $subtitle = $valueResource->linkRaw($valueResource->displayTitle(null, $valueLang));
+            } else {
+                $subtitle = $this->subtitleProperty ? $resource->value($this->subtitleProperty, ['lang' => $valueLang]) : 'None';
+
+            }
+
             $linkContent = '';
             //see https://getbootstrap.com/docs/4.3/components/card/#horizontal and https://getbootstrap.com/docs/4.3/components/card/#card-decks
             ?>
@@ -42,8 +46,8 @@ $this->headLink()->appendStylesheet("https://cdn.jsdelivr.net/npm/bootstrap@4.3.
 
                 <div class="col-md-8">
                     <div class="card-body">
-                        <h5 class="card-title"><?php echo $heading ?></h5>
-                        <p class="card-text"><?php echo $body ?></p>
+                        <h5 class="card-title"><?php echo $title ?></h5>
+                        <p class="card-text"><?php echo $subtitle ?></p>
                     </div>
                 </div>
             </div>

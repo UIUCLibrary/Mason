@@ -104,12 +104,15 @@ class ConfigurablePreview extends BrowsePreview implements TemplateableBlockLayo
         $titleProperty->setEmptyOption('[None]');
         $titleProperty->setLabel('Preview title property');
         $titleProperty->setOption('info','Select the property to use for the card title');
+        $titleProperty->setOption('term_as_value', true);
 
 
         $subtitleProperty = $this->initPropertySelect("o:block[__blockIndex__][o:data][preview-subtitle-property]");
         $subtitleProperty->setEmptyOption('[None]');
         $subtitleProperty->setLabel('Preview subtitle property');
         $subtitleProperty->setOption('info','Select the property to use for the card subtitle');
+        $subtitleProperty->setOption('term_as_value', '1');
+
 //        $property->setOption('apply_templates', [15]);
 
         $form = new Form();
@@ -183,10 +186,6 @@ class ConfigurablePreview extends BrowsePreview implements TemplateableBlockLayo
             'o:block[__blockIndex__][o:data][preview-title-property]' => $data['preview-title-property'],
             'o:block[__blockIndex__][o:data][preview-subtitle-property]' => $data['preview-subtitle-property'],
             'o:block[__blockIndex__][o:data][show-property-name]' => $data['show-property-name'],
-
-            'preview-subtitle-property' => '[None]',
-            'show-property-name' => false,
-
         ]);
 
         return $view->formCollection($form);
@@ -243,9 +242,11 @@ class ConfigurablePreview extends BrowsePreview implements TemplateableBlockLayo
             'block' => $block,
             'resourceType' => $resourceTypes[$resourceType],
             'resources' => $resources,
+            'titleProperty' => $block->dataValue('preview-title-property'),
+            'subtitleProperty' => $block->dataValue('preview-subtitle-property'),
             'heading' => $block->dataValue('heading'),
             'linkText' => $block->dataValue('link-text'),
-            'components' => $components,
+            'title' => $components,
             'query' => $originalQuery,
         ]);
     }
