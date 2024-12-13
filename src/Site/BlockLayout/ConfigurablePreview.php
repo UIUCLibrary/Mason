@@ -2,21 +2,16 @@
 
 namespace Mason\Site\BlockLayout;
 
-use Common\Form\Element\OptionalCheckbox;
 use Doctrine\ORM\EntityManager;
-use Laminas\Form\Element\Number;
 use Laminas\Form\Form;
 use Laminas\I18n\Translator\TranslatorInterface;
 use Laminas\View\Renderer\PhpRenderer;
-use Mason\Form\Element\AllSiteSelect;
 use Omeka\Api\Representation\SitePageBlockRepresentation;
 use Omeka\Api\Representation\SitePageRepresentation;
 use Omeka\Api\Representation\SiteRepresentation;
 use Omeka\Form\Element\PropertySelect;
-use Omeka\Module\Manager;
 use Omeka\Form\Element as OmekaElement;
 use Laminas\Form\Element;
-use Omeka\Site\BlockLayout\AbstractBlockLayout;
 use Omeka\Site\BlockLayout\TemplateableBlockLayoutInterface;
 use Omeka\Api\Manager as ApiManager;
 use Omeka\Site\BlockLayout\BrowsePreview;
@@ -87,11 +82,10 @@ class ConfigurablePreview extends BrowsePreview implements TemplateableBlockLayo
             'resource_type' => 'items',
             'query' => '',
             'heading' => '',
-            'limit' => 12,
-            'link-text' => 'Browse all', // @translate
+            'limit' => 100,
             'preview-title-property' => '[None]',
             'preview-subtitle-property' => '[None]',
-            'show-property-name' => false,
+//            'show-property-name' => false,
 
         ];
 
@@ -112,8 +106,6 @@ class ConfigurablePreview extends BrowsePreview implements TemplateableBlockLayo
         $subtitleProperty->setLabel('Preview subtitle property');
         $subtitleProperty->setOption('info','Select the property to use for the card subtitle');
         $subtitleProperty->setOption('term_as_value', '1');
-
-//        $property->setOption('apply_templates', [15]);
 
         $form = new Form();
         $form->add([
@@ -168,14 +160,6 @@ class ConfigurablePreview extends BrowsePreview implements TemplateableBlockLayo
 
         $form->add($titleProperty);
         $form->add($subtitleProperty);
-        $form->add([
-            'name' => 'o:block[__blockIndex__][o:data][show-property-name]',
-            'type' => OptionalCheckbox::class,
-            'options' => [
-                'label' => 'Display property names',
-                'info' => 'Leave unchecked if you only want the property values to appear'
-            ]
-        ]);
 
         $form->setData([
             'o:block[__blockIndex__][o:data][resource_type]' => $data['resource_type'],
@@ -211,7 +195,7 @@ class ConfigurablePreview extends BrowsePreview implements TemplateableBlockLayo
         }
 
         $query['site_id'] = $site->id();
-        $query['limit'] = $block->dataValue('limit', 12);
+        $query['limit'] = $block->dataValue('limit', 100);
 
         if (!isset($query['sort_by'])) {
             $query['sort_by_default'] = '';
@@ -244,8 +228,7 @@ class ConfigurablePreview extends BrowsePreview implements TemplateableBlockLayo
             'resources' => $resources,
             'titleProperty' => $block->dataValue('preview-title-property'),
             'subtitleProperty' => $block->dataValue('preview-subtitle-property'),
-            'heading' => $block->dataValue('heading'),
-            'linkText' => $block->dataValue('link-text'),
+//            'heading' => $block->dataValue('heading'),
             'title' => $components,
             'query' => $originalQuery,
         ]);
