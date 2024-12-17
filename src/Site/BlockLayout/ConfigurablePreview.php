@@ -81,12 +81,9 @@ class ConfigurablePreview extends BrowsePreview implements TemplateableBlockLayo
         $defaults = [
             'resource_type' => 'items',
             'query' => '',
-            'heading' => '',
             'limit' => 100,
             'preview-title-property' => '[None]',
             'preview-subtitle-property' => '[None]',
-//            'show-property-name' => false,
-
         ];
 
         $data = $block ? $block->data() + $defaults : $defaults;
@@ -141,22 +138,8 @@ class ConfigurablePreview extends BrowsePreview implements TemplateableBlockLayo
                 'info' => 'Maximum number of resources to display in the preview.', // @translate
             ],
         ]);
-        $form->add([
-            'name' => 'o:block[__blockIndex__][o:data][heading]',
-            'type' => Element\Text::class,
-            'options' => [
-                'label' => 'Preview title', // @translate
-                'info' => 'Heading above resource list, if any.', // @translate
-            ],
-        ]);
-        $form->add([
-            'name' => 'o:block[__blockIndex__][o:data][link-text]',
-            'type' => Element\Text::class,
-            'options' => [
-                'label' => 'Link text', // @translate
-                'info' => 'Text for link to full browse view, if any.', // @translate
-            ],
-        ]);
+
+
 
         $form->add($titleProperty);
         $form->add($subtitleProperty);
@@ -164,24 +147,14 @@ class ConfigurablePreview extends BrowsePreview implements TemplateableBlockLayo
         $form->setData([
             'o:block[__blockIndex__][o:data][resource_type]' => $data['resource_type'],
             'o:block[__blockIndex__][o:data][query]' => $data['query'],
-            'o:block[__blockIndex__][o:data][heading]' => $data['heading'],
             'o:block[__blockIndex__][o:data][limit]' => $data['limit'],
-            'o:block[__blockIndex__][o:data][link-text]' => $data['link-text'],
             'o:block[__blockIndex__][o:data][preview-title-property]' => $data['preview-title-property'],
             'o:block[__blockIndex__][o:data][preview-subtitle-property]' => $data['preview-subtitle-property'],
-            'o:block[__blockIndex__][o:data][show-property-name]' => $data['show-property-name'],
         ]);
 
         return $view->formCollection($form);
     }
-//
-//    /**
-//     * @inheritDoc
-//     */
-//    public function render(PhpRenderer $view, SitePageBlockRepresentation $block)
-//    {
-//        // TODO: Implement render() method.
-//    }
+
     public function render(PhpRenderer $view, SitePageBlockRepresentation $block, $templateViewScript = 'common/block-layout/configurable-preview')
     {
         $resourceType = $block->dataValue('resource_type', 'items');
@@ -208,7 +181,7 @@ class ConfigurablePreview extends BrowsePreview implements TemplateableBlockLayo
 
         //Show all resource components if none set
         if (empty($block->dataValue('components'))) {
-            $components = ['resource-heading', 'resource-body', 'thumbnail'];
+            $components = ['resource-body', 'thumbnail'];
         } else {
             $components = $block->dataValue('components');
         }
@@ -228,7 +201,6 @@ class ConfigurablePreview extends BrowsePreview implements TemplateableBlockLayo
             'resources' => $resources,
             'titleProperty' => $block->dataValue('preview-title-property'),
             'subtitleProperty' => $block->dataValue('preview-subtitle-property'),
-//            'heading' => $block->dataValue('heading'),
             'title' => $components,
             'query' => $originalQuery,
         ]);
