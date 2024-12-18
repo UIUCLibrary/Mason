@@ -82,6 +82,7 @@ class ConfigurablePreview extends BrowsePreview implements TemplateableBlockLayo
             'resource_type' => 'items',
             'query' => '',
             'limit' => 100,
+            'columns' => 2,
             'preview-title-property' => '[None]',
             'preview-subtitle-property' => '[None]',
         ];
@@ -138,6 +139,15 @@ class ConfigurablePreview extends BrowsePreview implements TemplateableBlockLayo
                 'info' => 'Maximum number of resources to display in the preview.', // @translate
             ],
         ]);
+        $form->add([
+            'name' => 'o:block[__blockIndex__][o:data][columns]',
+            'type' => Element\Number::class,
+            'options' => [
+                'label' => 'Columns', // @translate
+                'info' => 'Number of cards per row', // @translate
+            ],
+        ]);
+
 
 
 
@@ -148,6 +158,7 @@ class ConfigurablePreview extends BrowsePreview implements TemplateableBlockLayo
             'o:block[__blockIndex__][o:data][resource_type]' => $data['resource_type'],
             'o:block[__blockIndex__][o:data][query]' => $data['query'],
             'o:block[__blockIndex__][o:data][limit]' => $data['limit'],
+            'o:block[__blockIndex__][o:data][columns]' => $data['columns'],
             'o:block[__blockIndex__][o:data][preview-title-property]' => $data['preview-title-property'],
             'o:block[__blockIndex__][o:data][preview-subtitle-property]' => $data['preview-subtitle-property'],
         ]);
@@ -203,6 +214,7 @@ class ConfigurablePreview extends BrowsePreview implements TemplateableBlockLayo
             'subtitleProperty' => $block->dataValue('preview-subtitle-property'),
             'title' => $components,
             'query' => $originalQuery,
+            'columns' =>$block->dataValue('columns'),
         ]);
     }
 
