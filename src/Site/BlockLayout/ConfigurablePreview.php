@@ -85,6 +85,7 @@ class ConfigurablePreview extends BrowsePreview implements TemplateableBlockLayo
             'columns' => 2,
             'preview-title-property' => '[None]',
             'preview-subtitle-property' => '[None]',
+            'final-row' => 'same'
         ];
 
         $data = $block ? $block->data() + $defaults : $defaults;
@@ -121,6 +122,21 @@ class ConfigurablePreview extends BrowsePreview implements TemplateableBlockLayo
                 'class' => 'browse-preview-resource-type',
             ],
         ]);
+        $form->add([
+            'name' => 'o:block[__blockIndex__][o:data][final-row]',
+            'type' => Element\Select::class,
+            'options' => [
+                'label' => 'Final Row card size', // @translate
+                'value_options' => [
+                    'same' => 'Same as other rows',  // @translate
+                    'fill' => 'Stretch to fill the row',  // @translate
+                ],
+            ],
+            'attributes' => [
+                'class' => 'browse-preview-resource-type',
+            ],
+        ]);
+
         $form->add([
             'name' => 'o:block[__blockIndex__][o:data][query]',
             'type' => OmekaElement\Query::class,
@@ -159,6 +175,7 @@ class ConfigurablePreview extends BrowsePreview implements TemplateableBlockLayo
             'o:block[__blockIndex__][o:data][query]' => $data['query'],
             'o:block[__blockIndex__][o:data][limit]' => $data['limit'],
             'o:block[__blockIndex__][o:data][columns]' => $data['columns'],
+            'o:block[__blockIndex__][o:data][final-row]' => $data['final-row'],
             'o:block[__blockIndex__][o:data][preview-title-property]' => $data['preview-title-property'],
             'o:block[__blockIndex__][o:data][preview-subtitle-property]' => $data['preview-subtitle-property'],
         ]);
@@ -215,6 +232,7 @@ class ConfigurablePreview extends BrowsePreview implements TemplateableBlockLayo
             'title' => $components,
             'query' => $originalQuery,
             'columns' =>$block->dataValue('columns'),
+            'finalRow' => $block->dataValue('final-row')
         ]);
     }
 
