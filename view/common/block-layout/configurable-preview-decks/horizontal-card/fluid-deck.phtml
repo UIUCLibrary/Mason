@@ -1,0 +1,52 @@
+<?php
+$translate = $this->plugin('translate');
+$escape = $this->plugin('escapeHtml');
+$thumbnail = $this->plugin('thumbnail');
+$this->headLink()->appendStylesheet("https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css");
+$this->headLink()->appendStylesheet($this->assetUrl('css/style.css', 'Mason'));
+$row_width = $this->columns;
+$filterLocale = (bool) $this->siteSetting('filter_locale_values');
+$lang = $this->lang();
+$valueLang = $filterLocale ? [$lang, ''] : null;
+
+?>
+<div class="container-fluid">
+    <div class="row" id="contentPanel">
+    <?php
+        foreach ($this->resources as $resource):
+            $titleText = $this->titleProperty ? $resource->value($this->titleProperty, ['default' => $this->translate('[Untitled]'), 'lang' => $valueLang]) : $resource->displayTitle(null, $valueLang);
+            $title = $resource->linkRaw($titleText);
+            $valueResource = $resource->value($this->subtitleProperty) ? $resource->value($this->subtitleProperty)->valueResource(): false;
+            if ($valueResource){
+                $subtitle = $valueResource->linkRaw($valueResource->displayTitle(null, $valueLang));
+            } else {
+                $subtitle = $this->subtitleProperty ? $resource->value($this->subtitleProperty, ['lang' => $valueLang]) : 'None';
+            }
+    ?>
+        <div class="col-sm-8 col-md-8 col-lg-6 col-xl-6 pb-4">
+            <div class="card" >
+                <div class="row no-gutters">
+                    <div class="col-md-6">
+                        <?php  echo $resource->linkRaw($this->thumbnail($resource, 'square')); ?>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="card-body">
+                            <p class="card-title"><?php echo $title ?></p>
+                            <p class="card-text"><?php echo $subtitle ?></p>
+                        </div>
+                    </div>
+                </div>
+
+                <!--                <div class="card-body">-->
+<!--                    <div class="h4 card-title">-->
+<!--                        <span>Card 1 👀</span>-->
+<!--                    </div>-->
+<!--                    <p>Some text in 1 </p>-->
+<!--                    <img src="https://placehold.co/200x200" class="rounded rounded-circle">-->
+<!--                </div>-->
+            </div>
+        </div>
+        <?php endforeach;?>
+       </div>
+</div>
