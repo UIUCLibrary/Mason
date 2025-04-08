@@ -23,28 +23,23 @@ $valueLang = $filterLocale ? [$lang, ''] : null;
                 $subtitle = $this->subtitleProperty ? $resource->value($this->subtitleProperty, ['lang' => $valueLang]) : 'None';
             }
     ?>
-        <div class="col-sm-8 col-md-8 col-lg-6 col-xl-6 pb-4">
+        <div class="col-12 col-sm-10 col-lg-6 col-xl-6 pb-4">
             <div class="card" >
                 <div class="row no-gutters">
-                    <div class="col-md-6">
+                    <div class="col-12 d-sm-none">
+                        <?php  echo $resource->linkRaw($this->thumbnail($resource, 'large')); ?>
+                    </div>
+                    <div class="col-sm-4 d-none d-sm-block">
                         <?php  echo $resource->linkRaw($this->thumbnail($resource, 'square')); ?>
                     </div>
 
-                    <div class="col-md-6">
+                    <div class="col-sm-8">
                         <div class="card-body">
                             <p class="card-title"><?php echo $title ?></p>
                             <p class="card-text"><?php echo $subtitle ?></p>
                         </div>
                     </div>
                 </div>
-
-                <!--                <div class="card-body">-->
-<!--                    <div class="h4 card-title">-->
-<!--                        <span>Card 1 👀</span>-->
-<!--                    </div>-->
-<!--                    <p>Some text in 1 </p>-->
-<!--                    <img src="https://placehold.co/200x200" class="rounded rounded-circle">-->
-<!--                </div>-->
             </div>
         </div>
         <?php endforeach;?>
