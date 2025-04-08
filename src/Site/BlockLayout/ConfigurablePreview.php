@@ -85,7 +85,7 @@ class ConfigurablePreview extends BrowsePreview implements TemplateableBlockLayo
             'columns' => 2,
             'preview-title-property' => '[None]',
             'preview-subtitle-property' => '[None]',
-            'final-row' => 'same'
+            'card-style' => 'horizontal'
         ];
 
         $data = $block ? $block->data() + $defaults : $defaults;
@@ -123,13 +123,13 @@ class ConfigurablePreview extends BrowsePreview implements TemplateableBlockLayo
             ],
         ]);
         $form->add([
-            'name' => 'o:block[__blockIndex__][o:data][final-row]',
+            'name' => 'o:block[__blockIndex__][o:data][card-style]',
             'type' => Element\Select::class,
             'options' => [
-                'label' => 'Final Row card size', // @translate
+                'label' => 'Card Style', // @translate
                 'value_options' => [
-                    'same' => 'Same as other rows',  // @translate
-                    'fill' => 'Stretch to fill the row',  // @translate
+                    'horizontal' => 'horizontal (image and text are side-by-side)',  // @translate
+                    'vertical' => 'vertical (image is above text)',  // @translate
                 ],
             ],
             'attributes' => [
@@ -157,10 +157,15 @@ class ConfigurablePreview extends BrowsePreview implements TemplateableBlockLayo
         ]);
         $form->add([
             'name' => 'o:block[__blockIndex__][o:data][columns]',
-            'type' => Element\Number::class,
+            'type' => Element\Select::class,
             'options' => [
-                'label' => 'Columns', // @translate
-                'info' => 'Number of cards per row', // @translate
+                'value_options' => [
+                    '1' => 'one',
+                    '2' => 'two',
+                    '3' => 'three'
+                ],
+                'label' => 'Maximum Columns', // @translate
+                'info' => 'Number of cards per row on desktop displays (', // @translate
             ],
         ]);
 
@@ -175,7 +180,7 @@ class ConfigurablePreview extends BrowsePreview implements TemplateableBlockLayo
             'o:block[__blockIndex__][o:data][query]' => $data['query'],
             'o:block[__blockIndex__][o:data][limit]' => $data['limit'],
             'o:block[__blockIndex__][o:data][columns]' => $data['columns'],
-            'o:block[__blockIndex__][o:data][final-row]' => $data['final-row'],
+            'o:block[__blockIndex__][o:data][card-style]' => $data['card-style'],
             'o:block[__blockIndex__][o:data][preview-title-property]' => $data['preview-title-property'],
             'o:block[__blockIndex__][o:data][preview-subtitle-property]' => $data['preview-subtitle-property'],
         ]);
@@ -232,7 +237,7 @@ class ConfigurablePreview extends BrowsePreview implements TemplateableBlockLayo
             'title' => $components,
             'query' => $originalQuery,
             'columns' =>$block->dataValue('columns'),
-            'finalRow' => $block->dataValue('final-row')
+            'cardStyle' => $block->dataValue('card-style')
         ]);
     }
 

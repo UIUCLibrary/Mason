@@ -13,7 +13,7 @@ $bs_md_col = max($bs_lg_col, 6);
 ?>
 <div class="container-fluid">
     <div class="row" id="contentPanel">
-    <?php
+        <?php
         foreach ($this->resources as $resource):
             $titleText = $this->titleProperty ? $resource->value($this->titleProperty, ['default' => $this->translate('[Untitled]'), 'lang' => $valueLang]) : $resource->displayTitle(null, $valueLang);
             $title = $resource->linkRaw($titleText);
@@ -23,26 +23,22 @@ $bs_md_col = max($bs_lg_col, 6);
             } else {
                 $subtitle = $this->subtitleProperty ? $resource->value($this->subtitleProperty, ['lang' => $valueLang]) : 'None';
             }
-    ?>
-        <div class="col-sm-12 col-md-<?php echo $bs_md_col ?> col-lg-<?php echo $bs_lg_col ?> pb-4">
-            <div class="card" >
-                <div class="row no-gutters">
-                    <div class="col-12 d-sm-none">
-                        <?php  echo $resource->linkRaw($this->thumbnail($resource, 'large')); ?>
-                    </div>
-                    <div class="col-sm-4 d-none d-sm-block">
-                        <?php  echo $resource->linkRaw($this->thumbnail($resource, 'square')); ?>
-                    </div>
-
-                    <div class="col-sm-8">
-                        <div class="card-body">
-                            <p class="card-title"><?php echo $title ?></p>
-                            <p class="card-text"><?php echo $subtitle ?></p>
+            ?>
+            <div class="col-sm-12 col-md-<?php echo $bs_md_col ?> col-lg-<?php echo $bs_lg_col ?> pb-4">
+                <div class="card" >
+                    <div class="row no-gutters d-block mx-auto">
+                        <div class="col-12">
+                            <?php  echo $resource->linkRaw($this->thumbnail($resource, 'large')); ?>
+                        </div>
+                        <div class="col-sm-12">
+                            <div class="card-body">
+                                <p class="card-title"><?php echo $title ?></p>
+                                <p class="card-text"><?php echo $subtitle ?></p>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
         <?php endforeach;?>
-       </div>
+    </div>
 </div>
