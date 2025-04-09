@@ -17,12 +17,35 @@ $bs_md_col = max($bs_lg_col, 6);
         foreach ($this->resources as $resource):
             $titleText = $this->titleProperty ? $resource->value($this->titleProperty, ['default' => $this->translate('[Untitled]'), 'lang' => $valueLang]) : $resource->displayTitle(null, $valueLang);
             $title = $resource->linkRaw($titleText);
-            $valueResource = $resource->value($this->subtitleProperty) ? $resource->value($this->subtitleProperty)->valueResource(): false;
-            if ($valueResource){
-                $subtitle = $valueResource->linkRaw($valueResource->displayTitle(null, $valueLang));
+           //TODO: this need to be a view helper
+            $subtitle = '';
+            $propertyCounter = 0;
+            $propertyCount = count($resource->value($this->subtitleProperty,['all'=>true]));
+            if ($propertyCount > 0){
+                foreach ($resource->value($this->subtitleProperty,['all'=>true]) as $value){
+                    $propertyCounter++;
+                    //if this is the last entry, add "and"
+                    if ($propertyCounter > 1 && $propertyCounter == $propertyCount){
+                        $subtitle.=" and ";
+                    }
+                    if($value->valueResource()){
+                        //if it is a resource, get a link to the resource
+                        $subtitle .= $value->valueResource()->linkRaw($value->valueResource()->displayTitle(null, $valueLang));
+                    } else {
+                        //otherwise, get the text
+                        $subtitle .= $value->asHTML();
+                    }
+
+                    //if it is a long list, add comma after all but last and penultimate
+                    if ($propertyCounter < $propertyCount-1) {
+                        $subtitle.=', ';
+                    }
+                }
             } else {
-                $subtitle = $this->subtitleProperty ? $resource->value($this->subtitleProperty, ['lang' => $valueLang]) : 'None';
+                $subtitle = 'None';
             }
+
+
     ?>
         <div class="col-sm-12 col-md-<?php echo $bs_md_col ?> col-lg-<?php echo $bs_lg_col ?> pb-4">
             <div class="card mason-configurable-preview" >
