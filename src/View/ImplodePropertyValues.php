@@ -36,8 +36,6 @@ class ImplodePropertyValues extends AbstractHelper
                     $implodedValues.=', ';
                 }
             }
-        } else {
-            $implodedValues = 'None';
         }
         return $implodedValues;
     }

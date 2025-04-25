@@ -19,7 +19,7 @@ $bs_md_col = max($bs_lg_col, 6);
             $title = $resource->linkRaw($titleText);
            //TODO: this need to be a view helper
             $subtitle = $this->implodePropertyValues($resource, $this->subtitleProperty);
-            $details = $this->implodePropertyValues($resource, $this->detailsProperty);
+            $details = $this->detailsProperty ? $this->implodePropertyValues($resource, $this->detailsProperty): '';
     ?>
         <div class="col-sm-12 col-md-<?php echo $bs_md_col ?> col-lg-<?php echo $bs_lg_col ?> pb-4">
             <div class="card mason-configurable-preview" >
@@ -35,9 +35,10 @@ $bs_md_col = max($bs_lg_col, 6);
                         <div class="card-body pr-lg-1 pr-md-2">
                             <p class="card-title pb-3 mason-configurable-preview-card-title"><?php echo $title ?></p>
                             <p class="card-text align-middle mason-configurable-preview-card-subtitle"><?php echo $subtitle ?></p>
+                        <?php if ($details): ?>
                             <hr>
                             <p class="card-text align-middle mason-configurable-preview-card-details"><?php echo $details ?></p>
-
+                        <?php endif ?>
                         </div>
                     </div>
                 </div>
