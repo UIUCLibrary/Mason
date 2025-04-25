@@ -17,12 +17,8 @@ $bs_md_col = max($bs_lg_col, 6);
         foreach ($this->resources as $resource):
             $titleText = $this->titleProperty ? $resource->value($this->titleProperty, ['default' => $this->translate('[Untitled]'), 'lang' => $valueLang]) : $resource->displayTitle(null, $valueLang);
             $title = $resource->linkRaw($titleText);
-            $valueResource = $resource->value($this->subtitleProperty) ? $resource->value($this->subtitleProperty)->valueResource(): false;
-            if ($valueResource){
-                $subtitle = $valueResource->linkRaw($valueResource->displayTitle(null, $valueLang));
-            } else {
-                $subtitle = $this->subtitleProperty ? $resource->value($this->subtitleProperty, ['lang' => $valueLang]) : 'None';
-            }
+            $subtitle = $this->implodePropertyValues($resource, $this->subtitleProperty);
+            $details = $this->implodePropertyValues($resource, $this->detailsProperty);
             ?>
             <div class="col-sm-12 col-md-<?php echo $bs_md_col ?> col-lg-<?php echo $bs_lg_col ?> pb-4">
                 <div class="card mason-configurable-preview" >
@@ -34,6 +30,8 @@ $bs_md_col = max($bs_lg_col, 6);
                             <div class="card-body">
                                 <p class="card-title pr-md-1"><?php echo $title ?></p>
                                 <p class="card-text"><?php echo $subtitle ?></p>
+                                <p class="card-text"><?php echo $details ?></p>
+
                             </div>
                         </div>
                     </div>

@@ -85,6 +85,7 @@ class ConfigurablePreview extends BrowsePreview implements TemplateableBlockLayo
             'columns' => 2,
             'preview-title-property' => '[None]',
             'preview-subtitle-property' => '[None]',
+            'preview-details-property' => '[None]',
             'card-style' => 'horizontal'
         ];
 
@@ -99,12 +100,17 @@ class ConfigurablePreview extends BrowsePreview implements TemplateableBlockLayo
         $titleProperty->setOption('info','Select the property to use for the card title');
         $titleProperty->setOption('term_as_value', true);
 
-
         $subtitleProperty = $this->initPropertySelect("o:block[__blockIndex__][o:data][preview-subtitle-property]");
         $subtitleProperty->setEmptyOption('[None]');
         $subtitleProperty->setLabel('Preview subtitle property');
         $subtitleProperty->setOption('info','Select the property to use for the card subtitle');
         $subtitleProperty->setOption('term_as_value', '1');
+
+        $detailsProperty = $this->initPropertySelect("o:block[__blockIndex__][o:data][preview-details-property]");
+        $detailsProperty->setEmptyOption('[None]');
+        $detailsProperty->setLabel('Preview details property');
+        $detailsProperty->setOption('info','Select the property to use for the card details');
+        $detailsProperty->setOption('term_as_value', '1');
 
         $form = new Form();
         $form->add([
@@ -168,12 +174,9 @@ class ConfigurablePreview extends BrowsePreview implements TemplateableBlockLayo
                 'info' => 'Number of cards per row on desktop displays (', // @translate
             ],
         ]);
-
-
-
-
         $form->add($titleProperty);
         $form->add($subtitleProperty);
+        $form->add($detailsProperty);
 
         $form->setData([
             'o:block[__blockIndex__][o:data][resource_type]' => $data['resource_type'],
@@ -183,6 +186,8 @@ class ConfigurablePreview extends BrowsePreview implements TemplateableBlockLayo
             'o:block[__blockIndex__][o:data][card-style]' => $data['card-style'],
             'o:block[__blockIndex__][o:data][preview-title-property]' => $data['preview-title-property'],
             'o:block[__blockIndex__][o:data][preview-subtitle-property]' => $data['preview-subtitle-property'],
+            'o:block[__blockIndex__][o:data][preview-details-property]' => $data['preview-details-property'],
+
         ]);
 
         return $view->formCollection($form);
@@ -234,6 +239,7 @@ class ConfigurablePreview extends BrowsePreview implements TemplateableBlockLayo
             'resources' => $resources,
             'titleProperty' => $block->dataValue('preview-title-property'),
             'subtitleProperty' => $block->dataValue('preview-subtitle-property'),
+            'detailsProperty' => $block->dataValue('preview-details-property'),
             'title' => $components,
             'query' => $originalQuery,
             'columns' =>$block->dataValue('columns'),
