@@ -8,9 +8,6 @@ use Mason\Service\BlockLayout\ListOfExhibitsFactory;
 use Mason\Service\BlockLayout\ExhibitContentsFactory;
 use Mason\View\ImplodePropertyValues;
 
-use Mason\Service\Form\Element\TeamSelectFactory;
-use Omeka\Entity\Media;
-
 return [
     'block_layouts' => [
 
