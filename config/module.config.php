@@ -6,6 +6,7 @@ use Mason\Service\BlockLayout\ConfigurablePreviewFactory;
 use Mason\Service\BlockLayout\DisableSubNavFactory;
 use Mason\Service\BlockLayout\ListOfExhibitsFactory;
 use Mason\Service\BlockLayout\ExhibitContentsFactory;
+use Mason\View\ImplodePropertyValues;
 
 use Mason\Service\Form\Element\TeamSelectFactory;
 use Omeka\Entity\Media;
@@ -24,6 +25,11 @@ return [
     'view_manager' => [
         'template_path_stack' => [
             dirname(__DIR__) . '/view',
+        ]
+    ],
+    'view_helpers' => [
+        'invokables'=> [
+            'implodePropertyValues' => ImplodePropertyValues::class
         ]
     ],
     'media_ingesters' => [
