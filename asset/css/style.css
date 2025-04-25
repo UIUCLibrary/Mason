@@ -16,3 +16,27 @@
     font-weight: 400;
     line-height: 1.25;
 }
+
+.mason-thumbnail {
+    background:black;
+}
+
+.mason-configurable-preview-vertical .card-text:last-child {
+    margin-bottom: 2rem;
+}
+
+.mason-configurable-preview-vertical .mason-configurable-preview-card-details{
+    margin-top: 2rem;
+}
+
+.mason-configurable-preview-horizontal .card-text:last-child {
+    margin-bottom: 2rem;
+}
+
+.mason-configurable-preview-horizontal .mason-configurable-preview-card-details{
+    margin-top: 2rem;
+}
+
+.mason-configurable-preview-horizontal hr, .mason-configurable-preview-vertical hr {
+    margin: 2rem .75rem;
+}

@@ -22,7 +22,7 @@ $bs_md_col = max($bs_lg_col, 6);
             $details = $this->detailsProperty ? $this->implodePropertyValues($resource, $this->detailsProperty): '';
     ?>
         <div class="col-sm-12 col-md-<?php echo $bs_md_col ?> col-lg-<?php echo $bs_lg_col ?> pb-4">
-            <div class="card mason-configurable-preview" >
+            <div class="card mason-configurable-preview-horizontal" >
                 <div class="row no-gutters d-sm-flex d-block mx-sm-0 mx-auto">
                     <div class="col-12 d-sm-none ">
                         <?php  echo $resource->linkRaw($this->thumbnail($resource, 'large')); ?>
