@@ -16,7 +16,7 @@ $valueLang = $filterLocale ? [$lang, ''] : null;
 //echo $this->partial('common/block-layout/configurable-preview-decks/last-row-same-sized');
 //echo $this->partial('common/block-layout/configurable-preview-decks/horizontal-card/last-row-same-sized');
 if ($this->cardStyle=='horizontal'){
-echo $this->partial('common/block-layout/configurable-preview-decks/horizontal-card/fluid-deck');
+    echo $this->partial('common/block-layout/configurable-preview-decks/horizontal-card/fluid-deck');
 } elseif ($this->cardStyle=='vertical') {
     echo $this->partial('common/block-layout/configurable-preview-decks/vertical-card/fluid-deck');
 } else {
